@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:suitmedia_flutter/models/user.dart';
+import 'package:suitmedia_flutter/screens/second_screen.dart';
+import 'package:suitmedia_flutter/utils.dart';
 
 class ThirdScreen extends StatefulWidget {
-  late ListUser listUser;
+  ListUser listUser;
+  String name;
   ThirdScreen({
     super.key,
     required this.listUser,
+    required this.name,
   });
 
   @override
@@ -25,25 +29,35 @@ class _ThirdScreenState extends State<ThirdScreen> {
         iconTheme: const IconThemeData(color: Colors.black),
         elevation: 1,
       ),
-      body: ListView(
-        children: [
-          Text(
-            widget.listUser.data.toString(),
-          ),
-          const SizedBox(height: 5),
-          Row(
-            children: [
-              Container(
-                height: 100,
-                width: 100,
-                decoration:
-                    BoxDecoration(color: Colors.orange, shape: BoxShape.circle),
-              ),
-              Column()
-            ],
-          )
-        ],
-      ),
+      body: widget.listUser.data.isEmpty
+          ? const Center(
+              child: Text('No Data'),
+            )
+          : ListView.builder(
+              itemCount: widget.listUser.data.length,
+              itemBuilder: (_, index) => NewCard(
+                    route: () {
+                      Datum userData = Datum(
+                          id: widget.listUser.data[index].id,
+                          email: widget.listUser.data[index].email,
+                          firstName: widget.listUser.data[index].firstName,
+                          lastName: widget.listUser.data[index].lastName,
+                          avatar: widget.listUser.data[index].avatar);
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SecondScreen(
+                            selectedUser: userData,
+                            name: widget.name,
+                          ),
+                        ),
+                      );
+                    },
+                    username:
+                        '${widget.listUser.data[index].firstName} ${widget.listUser.data[index].lastName}',
+                    email: widget.listUser.data[index].email.toString(),
+                    avatar: widget.listUser.data[index].avatar.toString(),
+                  )),
     );
   }
 }

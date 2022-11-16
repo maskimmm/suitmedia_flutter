@@ -3,10 +3,21 @@ import 'package:suitmedia_flutter/models/user.dart';
 import 'package:suitmedia_flutter/screens/third_screen.dart';
 import 'package:suitmedia_flutter/utils.dart';
 
-class SecondScreen extends StatelessWidget {
-  final String name;
-  final String? selectedUser;
-  const SecondScreen({super.key, required this.name, this.selectedUser});
+class SecondScreen extends StatefulWidget {
+  final String? name;
+  final Datum? selectedUser;
+  const SecondScreen({super.key, this.name, this.selectedUser});
+
+  @override
+  State<SecondScreen> createState() => _SecondScreenState();
+}
+
+class _SecondScreenState extends State<SecondScreen> {
+  @override
+  void initState() {
+    print(widget.selectedUser);
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +49,7 @@ class SecondScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  name,
+                  widget.name!,
                   style: const TextStyle(
                     fontWeight: FontWeight.w800,
                     fontSize: 18,
@@ -50,7 +61,9 @@ class SecondScreen extends StatelessWidget {
           Align(
             alignment: const Alignment(0, -0.1),
             child: Text(
-              selectedUser ?? 'No Selected User',
+              widget.selectedUser == null
+                  ? 'No Selected User'
+                  : '${widget.selectedUser!.firstName} ${widget.selectedUser!.lastName}',
               style: const TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.w800,
@@ -64,11 +77,12 @@ class SecondScreen extends StatelessWidget {
               child: NewButton(
                   route: () async {
                     ListUser.fetchUser(1).then(
-                      (value) => Navigator.push(
+                      (value) => Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) => ThirdScreen(
                             listUser: value,
+                            name: widget.name!,
                           ),
                         ),
                       ),

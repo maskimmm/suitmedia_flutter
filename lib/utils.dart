@@ -95,3 +95,80 @@ class NewTextField extends StatelessWidget {
     );
   }
 }
+
+class NewCard extends StatelessWidget {
+  final GestureTapCallback route;
+  final String username;
+  final String email;
+  final String avatar;
+  const NewCard(
+      {Key? key,
+      required this.username,
+      required this.email,
+      required this.avatar,
+      required this.route})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const SizedBox(height: 5),
+        InkWell(
+          onTap: route,
+          child: SizedBox(
+            width: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(
+                      avatar,
+                    ),
+                    radius: 35,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        username,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        email,
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        SizedBox(
+          width: MediaQuery.of(context).size.width - 20,
+          child: Expanded(
+            child: Container(
+              width: double.infinity,
+              height: 1,
+              color: Colors.grey,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}

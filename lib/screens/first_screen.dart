@@ -51,14 +51,24 @@ class _FirstScreenState extends State<FirstScreen> {
                 const SizedBox(height: 10),
                 NewButton(
                   route: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SecondScreen(
-                          name: nameController.text,
+                    if (nameController.text == '') {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              content: Text('Must insert name'),
+                            );
+                          });
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SecondScreen(
+                            name: nameController.text,
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    }
                   },
                   textButton: 'NEXT',
                 ),
